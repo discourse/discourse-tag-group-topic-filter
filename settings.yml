@@ -1,0 +1,24 @@
+first_tag_group_name:
+  default: ""
+  client: true
+first_group_tag:
+  type: list
+  list_type: tag
+  default: ""
+  client: true
+second_tag_group_name:
+  default: ""
+  client: true
+second_group_tag:
+  type: list
+  list_type: tag
+  default: ""
+  client: true
+third_tag_group_name:
+  default: ""
+  client: true
+third_group_tag:
+  type: list
+  list_type: tag
+  default: ""
+  client: true

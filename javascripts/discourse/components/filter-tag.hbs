@@ -1,0 +1,9 @@
+<label for={{this.tagName}}>
+  <Input
+    @checked={{this.isChecked}}
+    id={{this.tagName}}
+    @type="checkbox"
+    {{on "change" this.toggleTag}}
+  />
+  {{this.tagName}}
+</label>

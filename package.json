@@ -1,0 +1,10 @@
+{
+  "name": "discourse-tag-group-topic-filter",
+  "version": "0.0.1",
+  "repository": "https://github.com/discourse/discourse-tag-group-topic-filter",
+  "author": "Discourse",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint-config-discourse": "^3.1.0"
+  }
+}
