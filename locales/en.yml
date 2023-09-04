@@ -1,10 +1,5 @@
 en:
-  # custom_filters:
-  #   first_tag_group_name:
-  #   first_tag_group:
-  #   second_tag_group_name:
-  #   second_tag_group:
-  #   third_tag_group_name:
-  #   thrid_tag_group:
+  custom_filters:
+    title: Filters
 
   apply_filters: Apply filters

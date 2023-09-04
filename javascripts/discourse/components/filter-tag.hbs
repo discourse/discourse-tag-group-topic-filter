@@ -1,9 +1,11 @@
-<label for={{this.tagName}}>
+<label class="btn filter-tag-label {{if this.isChecked 'checked'}}" for={{this.idTagName}} style={{this.style}}>
   <Input
+    class="filter-tag-input"
     @checked={{this.isChecked}}
-    id={{this.tagName}}
+    id={{this.idTagName}}
     @type="checkbox"
     {{on "change" this.toggleTag}}
   />
   {{this.tagName}}
+ 
 </label>

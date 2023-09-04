@@ -1,21 +1,30 @@
-  {{!-- {{#if shouldShowBlock}} --}}
-  <div class="custom-filters">
+{{#if shouldShowBlock}}
+<div class="custom-filters">
   <div class="custom-filters__body">
-    <h4>{{theme-i18n "custom_filters.title"}}</h4>
+    <h3>{{theme-i18n "custom_filters.title"}}</h3>
     <ul class="custom-filters__tags">
       {{#each this.tagGroups as |tagGroup|}}
-        <h2>{{tagGroup.name}}</h2>
-        {{#each tagGroup.tags as |tag|}}
-          <FilterTag
-            @name={{tag}}
-            @selectTag={{this.selectTag}}
-            @deselectTag={{this.deselectTag}}
-            @selectedTags={{this.selectedTags}}
-          />
-        {{/each}}
+        <li class="custom-filters__group">
+          <h2>{{tagGroup.name}}</h2>
+          <div class="custom-filters__list">
+
+            {{#each tagGroup.tags as |tag|}}
+              <FilterTag
+                @name={{tag}}
+                @selectTag={{this.selectTag}}
+                @deselectTag={{this.deselectTag}}
+                @selectedTags={{this.selectedTags}}
+                @primaryColor={{tagGroup.primaryColor}}
+                @secondaryColor={{tagGroup.secondaryColor}}
+              />
+            {{/each}}
+
+          </div>
+        </li>
       {{/each}}
+
     </ul>
-    <button {{action this.applyFilters}}>{{theme-i18n "apply_filters"}}</button>
+    <button class="custom-filters__button " {{action this.applyFilters}}>{{theme-i18n "apply_filters"}}</button>
   </div>
 </div>
-{{!-- {{/if}} --}}
+{{/if}}
