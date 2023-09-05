@@ -10,6 +10,7 @@ export default class CustomFilter extends Component {
   @service router;
 
   @tracked selectedTags = new TrackedArray();
+  @tracked or = false;
   category = {};
 
   constructor() {
@@ -25,9 +26,16 @@ export default class CustomFilter extends Component {
         ...currentRoute.attributes?.additionalTags,
       ];
     }
+
     this.category = currentRoute.attributes?.category
       ? currentRoute.attributes?.category
-      : { id: currentRoute.queryParams.category };
+      : { slug: currentRoute.queryParams.category };
+
+    this.or = this.router.currentRoute.queryParams.hasOwnProperty(
+      "match_all_tags"
+    )
+      ? !this.router.currentRoute.queryParams.or
+      : false;
   }
 
   get tagGroups() {
@@ -74,6 +82,11 @@ export default class CustomFilter extends Component {
   }
 
   @action
+  toggleTag() {
+    this.or = !this.or;
+  }
+
+  @action
   selectTag(tag) {
     this.selectedTags.push(tag);
   }
@@ -88,9 +101,26 @@ export default class CustomFilter extends Component {
     console.log("transition");
     const tagsPath = this.selectedTags.join("/");
     const category = this.category;
-    const transitionURL = category
-      ? `/tags/intersection/${tagsPath}?category=${category.id}`
-      : `/tags/intersection/${tagsPath}`;
-    DiscourseURL.routeTo(transitionURL, { queryParams: { category: 4 } });
+
+    let transitionURL = "";
+
+    if (this.selectedTags.length > 1) {
+      transitionURL = `/tags/intersection/${tagsPath}`;
+    } else {
+      transitionURL = `/tag/${tagsPath}`;
+    }
+
+    let params = [];
+
+    if (category.slug) {
+      params.push(`category=${category.slug}`);
+    }
+    if (this.or) {
+      params.push(`match_all_tags=${!this.or}`);
+    }
+
+    transitionURL = `${transitionURL}?${params.join("&")}`;
+
+    DiscourseURL.routeTo(transitionURL);
   }
 }

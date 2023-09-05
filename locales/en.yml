@@ -1,5 +1,6 @@
 en:
   custom_filters:
     title: Filters
+    or: or tag search
 
   apply_filters: Apply filters
