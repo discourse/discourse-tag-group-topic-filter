@@ -20,7 +20,7 @@ export default class CustomFilter extends Component {
 
   _initializeSelectedTags() {
     const currentRoute = this.router.currentRoute;
-    if (currentRoute.name == "tags.intersection") {
+    if (currentRoute.name === "tags.intersection") {
       this.selectedTags = [
         currentRoute.attributes?.tag.id,
         ...currentRoute.attributes?.additionalTags,
@@ -60,8 +60,6 @@ export default class CustomFilter extends Component {
       },
     ];
   }
-
-  @service router;
 
   get shouldShowBlock() {
     const currentRoute = this.router.currentRoute;
