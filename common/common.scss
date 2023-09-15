@@ -1,9 +1,6 @@
-$background-color: var(--primary-low);
-$hover-color: var(--primary-medium);
-
 :root {
-  --background-color: $background-color;
-  --hover-color: $hover-color;
+  --background-color: var(--primary-low);
+  --hover-color: var(--primary-medium);
 }
 
 .custom-filters {
@@ -58,7 +55,7 @@ $hover-color: var(--primary-medium);
     }
 
     &.checked {
-      background-color: #007bff;
+      background-color: var(--background-color);
       color: white;
     }
   }

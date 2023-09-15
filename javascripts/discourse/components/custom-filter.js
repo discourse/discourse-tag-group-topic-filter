@@ -10,7 +10,7 @@ export default class CustomFilter extends Component {
   @service router;
 
   @tracked selectedTags = new TrackedArray();
-  @tracked or = false;
+  @tracked or_filter = false;
   category = {};
 
   constructor() {
@@ -31,10 +31,10 @@ export default class CustomFilter extends Component {
       ? currentRoute.attributes?.category
       : { slug: currentRoute.queryParams.category };
 
-    this.or = this.router.currentRoute.queryParams.hasOwnProperty(
+    this.or_filter = this.router.currentRoute.queryParams.hasOwnProperty(
       "match_all_tags"
     )
-      ? !this.router.currentRoute.queryParams.or
+      ? !this.router.currentRoute.queryParams.or_filter
       : false;
   }
 
@@ -83,7 +83,7 @@ export default class CustomFilter extends Component {
 
   @action
   toggleTag() {
-    this.or = !this.or;
+    this.or_filter = !this.or_filter;
   }
 
   @action
@@ -98,7 +98,6 @@ export default class CustomFilter extends Component {
 
   @action
   applyFilters() {
-    console.log("transition");
     const tagsPath = this.selectedTags.join("/");
     const category = this.category;
 
@@ -115,8 +114,8 @@ export default class CustomFilter extends Component {
     if (category.slug) {
       params.push(`category=${category.slug}`);
     }
-    if (this.or) {
-      params.push(`match_all_tags=${!this.or}`);
+    if (this.or_filter) {
+      params.push(`match_all_tags=${!this.or_filter}`);
     }
 
     transitionURL = `${transitionURL}?${params.join("&")}`;
