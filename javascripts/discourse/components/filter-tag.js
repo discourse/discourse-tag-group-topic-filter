@@ -7,7 +7,7 @@ export default class StatusTagsComponent extends Component {
   get idTagName() {
     return this.args.name + "-custom-tag";
   }
-  
+
   get tagName() {
     return this.args.name;
   }
