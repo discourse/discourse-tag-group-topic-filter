@@ -6,10 +6,6 @@ first_group_tag:
   list_type: tag
   default: ""
   client: true
-first_group_tag_primary_color:  
-  default: ""
-first_group_tag_secondary_color:  
-  default: ""
 second_tag_group_name:
   default: ""
   client: true
@@ -18,10 +14,6 @@ second_group_tag:
   list_type: tag
   default: ""
   client: true
-second_group_tag_primary_color:  
-  default: ""
-second_group_tag_secondary_color:  
-  default: ""
 third_tag_group_name:
   default: ""
   client: true
@@ -30,7 +22,3 @@ third_group_tag:
   list_type: tag
   default: ""
   client: true
-third_group_tag_primary_color:  
-  default: ""
-third_group_tag_secondary_color:  
-  default: ""

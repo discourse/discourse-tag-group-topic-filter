@@ -24,7 +24,9 @@
     padding: 0.5em 0.65em;
     background-color: var(--primary-low);
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
     position: relative;
     border: 0px;
     margin: 1em 0 1em 1.25em;
@@ -35,7 +37,7 @@
   }
 }
 
-.btn {
+.custom_tag {
   &.filter-tag-label {
     display: flex;
     direction: row;
@@ -45,22 +47,24 @@
     border: 0px;
     color: var(--primary);
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
     position: relative;
     margin: 0 0.5rem;
 
     &.filter-tag-label:hover {
       background-color: var(--hover-color);
-      color:white;
+      color: white;
     }
 
     &.checked {
-      background-color: var(--background-color);
+      background-color: var(--hover-color);
       color: white;
     }
   }
 
-  &.custom-filter-logic-selector{
+  &.custom-filter-logic-selector {
     display: flex;
     direction: row;
     padding: 0.625em 1em !important;
@@ -69,12 +73,14 @@
     border: 0px;
     color: var(--primary);
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
     position: relative;
     margin: 0 0.5rem;
   }
 
-  &.custom-filter-logic-selector:hover{
+  &.custom-filter-logic-selector:hover {
     background-color: var(--primary-medium);
   }
 
