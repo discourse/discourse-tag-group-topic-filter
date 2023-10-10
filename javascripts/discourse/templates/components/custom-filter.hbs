@@ -2,7 +2,10 @@
   <div class="custom-filters">
     <div class="custom-filters__body">
       <h3>{{theme-i18n "custom_filters.title"}}</h3>
-      <label class="btn custom-filter-logic-selector {{if this.or 'checked'}}" for="custom-filter-logic-selector" >
+      <label
+        class="btn custom-filter-logic-selector {{if this.or 'checked'}}"
+        for="custom-filter-logic-selector"
+      >
         {{theme-i18n "custom_filters.or"}}
         <Input
           class="custom-filter-logic-selector filter-tag-input"
