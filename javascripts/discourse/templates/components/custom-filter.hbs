@@ -3,7 +3,10 @@
     <div class="custom-filters__body">
       <h3>{{theme-i18n "custom_filters.title"}}</h3>
       <label
-        class="btn custom-filter-logic-selector {{if this.orFilter 'checked'}}"
+        class={{concatClass
+          "btn custom-filter-logic-selector"
+          (if this.orFilter "checked")
+        }}
         for="custom-filter-logic-selector"
       >
         {{theme-i18n "custom_filters.or"}}

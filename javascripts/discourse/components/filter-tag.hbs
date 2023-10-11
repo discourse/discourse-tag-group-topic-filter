@@ -1,5 +1,8 @@
 <label
-  class="custom_tag filter-tag-label {{if this.isChecked 'checked'}}"
+  class={{concatClass
+    "custom_tag filter-tag-label"
+    (if this.isChecked "checked")
+  }}
   for={{this.idTagName}}
 >
   <Input

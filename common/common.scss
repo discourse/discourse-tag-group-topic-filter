@@ -52,6 +52,7 @@
       color 0.3s;
     position: relative;
     margin: 0 0.5rem;
+    caret-color: transparent;
 
     &.filter-tag-label:hover {
       background-color: var(--hover-color);

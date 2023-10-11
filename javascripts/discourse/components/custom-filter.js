@@ -1,7 +1,6 @@
 import Component from "@glimmer/component";
 import { inject as service } from "@ember/service";
 import { action } from "@ember/object";
-import { TrackedArray } from "@ember-compat/tracked-built-ins";
 import { tracked } from "@glimmer/tracking";
 import DiscourseURL from "discourse/lib/url";
 
@@ -9,8 +8,8 @@ export default class CustomFilter extends Component {
   @service siteSettings;
   @service router;
 
-  @tracked selectedTags = new TrackedArray();
-  @tracked or_filter = false;
+  @tracked orFilter = false;
+  selectedTags = [];
   category = {};
 
   constructor() {
@@ -20,6 +19,9 @@ export default class CustomFilter extends Component {
 
   _initializeSelectedTags() {
     const currentRoute = this.router.currentRoute;
+    if (currentRoute.name === "tag.show") {
+      this.selectedTags = [currentRoute.attributes?.tag.id];
+    }
     if (currentRoute.name === "tags.intersection") {
       this.selectedTags = [
         currentRoute.attributes?.tag.id,
@@ -31,10 +33,10 @@ export default class CustomFilter extends Component {
       ? currentRoute.attributes?.category
       : { slug: currentRoute.queryParams.category };
 
-    this.or_filter = this.router.currentRoute.queryParams.hasOwnProperty(
+    this.orFilter = this.router.currentRoute.queryParams.hasOwnProperty(
       "match_all_tags",
     )
-      ? !this.router.currentRoute.queryParams.or_filter
+      ? !this.router.currentRoute.queryParams.orFilter
       : false;
   }
 
@@ -81,7 +83,7 @@ export default class CustomFilter extends Component {
 
   @action
   toggleTag() {
-    this.or_filter = !this.or_filter;
+    this.orFilter = !this.orFilter;
   }
 
   @action
@@ -97,27 +99,31 @@ export default class CustomFilter extends Component {
   @action
   applyFilters() {
     const tagsPath = this.selectedTags.join("/");
-    const category = this.category;
 
     let transitionURL = "";
-
     if (this.selectedTags.length > 1) {
       transitionURL = `/tags/intersection/${tagsPath}`;
+    } else if (this.selectedTags.length === 0) {
+      transitionURL = this.category.slug
+        ? `/c/${this.category.slug}`
+        : "/latest";
+      DiscourseURL.routeTo(transitionURL);
     } else {
-      transitionURL = `/tag/${tagsPath}`;
+      transitionURL = this.category.slug
+        ? `/tags/c/${this.category.slug}/${tagsPath}`
+        : `/tag/${tagsPath}`;
     }
 
     let params = [];
 
-    if (category.slug) {
-      params.push(`category=${category.slug}`);
+    if (this.category.slug) {
+      params.push(`category=${this.category.slug}`);
     }
-    if (this.or_filter) {
-      params.push(`match_all_tags=${!this.or_filter}`);
+    if (this.orFilter) {
+      params.push(`match_all_tags=${!this.orFilter}`);
     }
 
     transitionURL = `${transitionURL}?${params.join("&")}`;
-
     DiscourseURL.routeTo(transitionURL);
   }
 }
