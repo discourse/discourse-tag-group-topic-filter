@@ -1,13 +1,16 @@
 import Component from "@glimmer/component";
 import { inject as service } from "@ember/service";
 import { action } from "@ember/object";
+import { tracked } from "@glimmer/tracking";
+import DiscourseURL from "discourse/lib/url";
 
 export default class CustomFilter extends Component {
   @service siteSettings;
   @service router;
 
+  @tracked orFilter = false;
   selectedTags = [];
-  category = 0;
+  category = {};
 
   constructor() {
     super(...arguments);
@@ -16,16 +19,28 @@ export default class CustomFilter extends Component {
 
   _initializeSelectedTags() {
     const currentRoute = this.router.currentRoute;
-    const { params } = currentRoute;
-    if (params.intersection) {
-      const selectedTags = params.intersection.split("/");
-      this.selectedTags = selectedTags;
+    if (currentRoute.name === "tag.show") {
+      this.selectedTags = [currentRoute.attributes?.tag.id];
     }
-    this.category = currentRoute.attributes?.category;
+    if (currentRoute.name === "tags.intersection") {
+      this.selectedTags = [
+        currentRoute.attributes?.tag.id,
+        ...currentRoute.attributes?.additionalTags,
+      ];
+    }
+
+    this.category = currentRoute.attributes?.category
+      ? currentRoute.attributes?.category
+      : { slug: currentRoute.queryParams.category };
+
+    this.orFilter = this.router.currentRoute.queryParams.hasOwnProperty(
+      "match_all_tags"
+    )
+      ? !this.router.currentRoute.queryParams.orFilter
+      : false;
   }
 
   get tagGroups() {
-    debugger;
     return [
       {
         name: settings.first_tag_group_name,
@@ -41,8 +56,6 @@ export default class CustomFilter extends Component {
       },
     ];
   }
-
-  @service router;
 
   get shouldShowBlock() {
     const currentRoute = this.router.currentRoute;
@@ -62,7 +75,11 @@ export default class CustomFilter extends Component {
     );
   }
 
- 
+  @action
+  toggleTag() {
+    this.orFilter = !this.orFilter;
+  }
+
   @action
   selectTag(tag) {
     this.selectedTags.push(tag);
@@ -75,7 +92,32 @@ export default class CustomFilter extends Component {
 
   @action
   applyFilters() {
-    const tagsPath = this.selectedTags.join('/');
-    this.router.transitionTo({ queryParams: { intersection: tagsPath } });
+    const tagsPath = this.selectedTags.join("/");
+
+    let transitionURL = "";
+    if (this.selectedTags.length > 1) {
+      transitionURL = `/tags/intersection/${tagsPath}`;
+    } else if (this.selectedTags.length === 0) {
+      transitionURL = this.category.slug
+        ? `/c/${this.category.slug}`
+        : "/latest";
+      DiscourseURL.routeTo(transitionURL);
+    } else {
+      transitionURL = this.category.slug
+        ? `/tags/c/${this.category.slug}/${tagsPath}`
+        : `/tag/${tagsPath}`;
+    }
+
+    let params = [];
+
+    if (this.category.slug) {
+      params.push(`category=${this.category.slug}`);
+    }
+    if (this.orFilter) {
+      params.push(`match_all_tags=${!this.orFilter}`);
+    }
+
+    transitionURL = `${transitionURL}?${params.join("&")}`;
+    DiscourseURL.routeTo(transitionURL);
   }
 }

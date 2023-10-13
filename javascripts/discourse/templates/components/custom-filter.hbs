@@ -1,21 +1,48 @@
-  {{!-- {{#if shouldShowBlock}} --}}
+{{#if shouldShowBlock}}
   <div class="custom-filters">
-  <div class="custom-filters__body">
-    <h4>{{theme-i18n "custom_filters.title"}}</h4>
-    <ul class="custom-filters__tags">
-      {{#each this.tagGroups as |tagGroup|}}
-        <h2>{{tagGroup.name}}</h2>
-        {{#each tagGroup.tags as |tag|}}
-          <FilterTag
-            @name={{tag}}
-            @selectTag={{this.selectTag}}
-            @deselectTag={{this.deselectTag}}
-            @selectedTags={{this.selectedTags}}
-          />
+    <div class="custom-filters__body">
+      <h3>{{theme-i18n "custom_filters.title"}}</h3>
+      <label
+        class={{concatClass
+          "btn custom-filter-logic-selector"
+          (if this.orFilter "checked")
+        }}
+        for="custom-filter-logic-selector"
+      >
+        {{theme-i18n "custom_filters.or"}}
+        <Input
+          class="custom-filter-logic-selector filter-tag-input"
+          @checked={{this.orFilter}}
+          id="custom-filter-logic-selector"
+          @type="checkbox"
+          {{on "change" this.toggleTag}}
+        />
+      </label>
+      <ul class="custom-filters__tags">
+        {{#each this.tagGroups as |tagGroup|}}
+          <li class="custom-filters__group">
+            <h2>{{tagGroup.name}}</h2>
+            <div class="custom-filters__list">
+
+              {{#each tagGroup.tags as |tag|}}
+                <FilterTag
+                  @name={{tag}}
+                  @selectTag={{this.selectTag}}
+                  @deselectTag={{this.deselectTag}}
+                  @selectedTags={{this.selectedTags}}
+                />
+              {{/each}}
+
+            </div>
+          </li>
         {{/each}}
-      {{/each}}
-    </ul>
-    <button {{action this.applyFilters}}>{{theme-i18n "apply_filters"}}</button>
+
+      </ul>
+      <DButton
+        class="custom-filters__button"
+        @translatedLabel={{theme-i18n "apply_filters"}}
+        {{action this.applyFilters}}
+      />
+    </div>
   </div>
-</div>
-{{!-- {{/if}} --}}
+{{/if}}
