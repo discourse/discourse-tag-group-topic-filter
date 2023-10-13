@@ -30,8 +30,6 @@
                   @selectTag={{this.selectTag}}
                   @deselectTag={{this.deselectTag}}
                   @selectedTags={{this.selectedTags}}
-                  @primaryColor={{tagGroup.primaryColor}}
-                  @secondaryColor={{tagGroup.secondaryColor}}
                 />
               {{/each}}
 
@@ -43,7 +41,8 @@
       <DButton
         class="custom-filters__button"
         {{action this.applyFilters}}
-      >{{theme-i18n "apply_filters"}}</DButton>
+        @translatedLabel={{theme-i18n "apply_filters"}}
+      ></DButton>
     </div>
   </div>
 {{/if}}

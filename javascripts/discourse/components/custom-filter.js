@@ -45,20 +45,14 @@ export default class CustomFilter extends Component {
       {
         name: settings.first_tag_group_name,
         tags: settings.first_group_tag.split("|"),
-        primaryColor: settings.first_group_tag_primary_color,
-        secondaryColor: settings.first_group_tag_secondary_color,
       },
       {
         name: settings.second_tag_group_name,
         tags: settings.second_group_tag.split("|"),
-        primaryColor: settings.second_group_tag_primary_color,
-        secondaryColor: settings.second_group_tag_secondary_color,
       },
       {
         name: settings.third_tag_group_name,
         tags: settings.third_group_tag.split("|"),
-        primaryColor: settings.third_group_tag_primary_color,
-        secondaryColor: settings.third_group_tag_secondary_color,
       },
     ];
   }
