@@ -34,7 +34,7 @@ export default class CustomFilter extends Component {
       : { slug: currentRoute.queryParams.category };
 
     this.orFilter = this.router.currentRoute.queryParams.hasOwnProperty(
-      "match_all_tags",
+      "match_all_tags"
     )
       ? !this.router.currentRoute.queryParams.orFilter
       : false;

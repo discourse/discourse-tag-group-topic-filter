@@ -13,8 +13,8 @@ module("Integration | Component | filter-tag", function (hooks) {
     this.set("deselectTag", (tag) =>
       this.set(
         "selectedTags",
-        this.selectedTags.filter((t) => t !== tag),
-      ),
+        this.selectedTags.filter((t) => t !== tag)
+      )
     );
 
     await render(hbs`
