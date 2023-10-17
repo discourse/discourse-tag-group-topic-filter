@@ -20,23 +20,22 @@
       </label>
       <ul class="custom-filters__tags">
         {{#each this.tagGroups as |tagGroup|}}
-          <li class="custom-filters__group">
-            <h2>{{tagGroup.name}}</h2>
-            <div class="custom-filters__list">
-
-              {{#each tagGroup.tags as |tag|}}
-                <FilterTag
-                  @name={{tag}}
-                  @selectTag={{this.selectTag}}
-                  @deselectTag={{this.deselectTag}}
-                  @selectedTags={{this.selectedTags}}
-                />
-              {{/each}}
-
-            </div>
-          </li>
+          {{#if tagGroup.name}}
+            <li class="custom-filters__group">
+              <h2>{{tagGroup.name}}</h2>
+              <div class="custom-filters__list">
+                {{#each tagGroup.tags as |tag|}}
+                  <FilterTag
+                    @name={{tag}}
+                    @selectTag={{this.selectTag}}
+                    @deselectTag={{this.deselectTag}}
+                    @selectedTags={{this.selectedTags}}
+                  />
+                {{/each}}
+              </div>
+            </li>
+          {{/if}}
         {{/each}}
-
       </ul>
       <DButton
         class="custom-filters__button"

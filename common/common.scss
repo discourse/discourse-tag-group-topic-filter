@@ -50,10 +50,7 @@
     margin: 0 0.5rem;
     caret-color: transparent;
 
-    &.filter-tag-label:hover {
-      background-color: var(--hover-color);
-      color: white;
-    }
+   
 
     &.checked {
       background-color: var(--hover-color);
@@ -61,23 +58,7 @@
     }
   }
 
-  &.custom-filter-logic-selector {
-    display: flex;
-    direction: row;
-    padding: 0.625em 1em !important;
-    background-color: var(--primary-low);
-    box-shadow: var(--box-shadow);
-    border: 0px;
-    color: var(--primary);
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    position: relative;
-    margin: 0 0.5rem;
-  }
-
-  &.custom-filter-logic-selector:hover {
-    background-color: var(--primary-medium);
-  }
+  
 
   &.checked {
     background-color: var(--primary-medium);
@@ -87,4 +68,33 @@
 
 .filter-tag-input {
   display: none;
+}
+
+#custom-filter-logic-selector{
+  display: none;
+}
+
+.custom-filter-logic-selector {
+  display: flex;
+  direction: row;
+  padding: 0.625em 1em !important;
+  background-color: var(--primary-low);
+  box-shadow: var(--box-shadow);
+  border: 0px;
+  color: var(--primary);
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  position: relative;
+  margin: 0 0.5rem;
+
+  &.checked {
+    background-color: var(--primary-medium);
+    color: white;
+
+    &:hover {
+      background-color: var(--primary-low);
+      color: var(--primary);
+    }
+  }
+  
 }
