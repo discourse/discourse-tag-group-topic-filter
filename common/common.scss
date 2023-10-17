@@ -50,15 +50,11 @@
     margin: 0 0.5rem;
     caret-color: transparent;
 
-   
-
     &.checked {
       background-color: var(--hover-color);
       color: white;
     }
   }
-
-  
 
   &.checked {
     background-color: var(--primary-medium);
@@ -70,7 +66,7 @@
   display: none;
 }
 
-#custom-filter-logic-selector{
+#custom-filter-logic-selector {
   display: none;
 }
 
@@ -96,5 +92,4 @@
       color: var(--primary);
     }
   }
-  
 }
