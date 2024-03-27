@@ -24,7 +24,7 @@ export default class CustomFilter extends Component {
     }
     if (currentRoute.name === "tags.intersection") {
       this.selectedTags = [
-        currentRoute.attributes?.tag.id,
+        currentRoute.attributes.tag.id,
         ...currentRoute.attributes.additionalTags,
       ];
     }
