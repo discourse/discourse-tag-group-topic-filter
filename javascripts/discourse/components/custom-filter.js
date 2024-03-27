@@ -1,7 +1,7 @@
 import Component from "@glimmer/component";
-import { inject as service } from "@ember/service";
-import { action } from "@ember/object";
 import { tracked } from "@glimmer/tracking";
+import { action } from "@ember/object";
+import { service } from "@ember/service";
 import DiscourseURL from "discourse/lib/url";
 
 export default class CustomFilter extends Component {
@@ -25,7 +25,7 @@ export default class CustomFilter extends Component {
     if (currentRoute.name === "tags.intersection") {
       this.selectedTags = [
         currentRoute.attributes?.tag.id,
-        ...currentRoute.attributes?.additionalTags,
+        ...currentRoute.attributes.additionalTags,
       ];
     }
 
