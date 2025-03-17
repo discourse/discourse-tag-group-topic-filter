@@ -1,6 +1,7 @@
 import Component from "@glimmer/component";
 import { tracked } from "@glimmer/tracking";
 import { action } from "@ember/object";
+
 export default class StatusTagsComponent extends Component {
   @tracked isChecked = this.args.selectedTags.includes(this.tagName);
 
