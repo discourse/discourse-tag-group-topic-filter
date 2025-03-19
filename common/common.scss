@@ -14,21 +14,26 @@
     flex-direction: column;
     margin: 0.2rem 0;
   }
+
   &__list {
     display: flex;
     flex-direction: row;
   }
+
   &__button {
     display: flex;
     direction: row;
     padding: 0.5em 0.65em;
     background-color: var(--primary-low);
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
     position: relative;
-    border: 0px;
+    border: 0;
     margin: 1em 0 1em 1.25em;
   }
+
   &__button:hover {
     background-color: var(--primary-medium);
     color: white;
@@ -42,10 +47,12 @@
     padding: 0.625em 1em !important;
     background-color: var(--background-color);
     box-shadow: var(--box-shadow);
-    border: 0px;
+    border: 0;
     color: var(--primary);
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
     position: relative;
     margin: 0 0.5rem;
     caret-color: transparent;
@@ -76,10 +83,12 @@
   padding: 0.625em 1em !important;
   background-color: var(--primary-low);
   box-shadow: var(--box-shadow);
-  border: 0px;
+  border: 0;
   color: var(--primary);
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
   position: relative;
   margin: 0 0.5rem;
 
