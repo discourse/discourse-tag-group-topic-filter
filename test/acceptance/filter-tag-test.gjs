@@ -1,12 +1,14 @@
 import { click, render } from "@ember/test-helpers";
 import { setupRenderingTest } from "ember-qunit";
-import hbs from "htmlbars-inline-precompile";
 import { module, test } from "qunit";
+import FilterTag from "../../discourse/components/filter-tag";
 
 module("Integration | Component | filter-tag", function (hooks) {
   setupRenderingTest(hooks);
 
-  test("it renders and toggles tags", async function (assert) {
+  test("renders and toggles tags", async function (assert) {
+    const self = this;
+
     this.set("tagName", "exampleTag");
     this.set("selectedTags", []);
     this.set("selectTag", (tag) => this.selectedTags.push(tag));
@@ -17,28 +19,26 @@ module("Integration | Component | filter-tag", function (hooks) {
       )
     );
 
-    await render(hbs`
-      <FilterTag
-        @name={{tagName}}
-        @selectedTags={{selectedTags}}
-        @selectTag={{selectTag}}
-        @deselectTag={{deselectTag}}
-      />
-    `);
+    await render(
+      <template>
+        <FilterTag
+          @name={{self.tagName}}
+          @selectedTags={{self.selectedTags}}
+          @selectTag={{self.selectTag}}
+          @deselectTag={{self.deselectTag}}
+        />
+      </template>
+    );
 
     assert.dom("label").hasText("exampleTag");
     assert.dom('input[type="checkbox"]').isNotChecked();
 
     await click('input[type="checkbox"]');
-
     assert.dom('input[type="checkbox"]').isChecked();
-
     assert.deepEqual(this.selectedTags, ["exampleTag"]);
 
     await click('input[type="checkbox"]');
-
     assert.dom('input[type="checkbox"]').isNotChecked();
-
     assert.deepEqual(this.selectedTags, []);
   });
 });
