@@ -1,8 +1,14 @@
 import Component from "@glimmer/component";
 import { tracked } from "@glimmer/tracking";
+import { Input } from "@ember/component";
+import { on } from "@ember/modifier";
 import { action } from "@ember/object";
 import { service } from "@ember/service";
+import DButton from "discourse/components/d-button";
+import concatClass from "discourse/helpers/concat-class";
 import DiscourseURL from "discourse/lib/url";
+import { i18n } from "discourse-i18n";
+import FilterTag from "./filter-tag";
 
 export default class CustomFilter extends Component {
   @service siteSettings;
@@ -120,4 +126,56 @@ export default class CustomFilter extends Component {
     transitionURL = `${transitionURL}?${params.join("&")}`;
     DiscourseURL.routeTo(transitionURL);
   }
+
+  <template>
+    {{#if this.shouldShowBlock}}
+      <div class="custom-filters">
+        <div class="custom-filters__body">
+          <h3>{{i18n (themePrefix "custom_filters.title")}}</h3>
+          <label
+            for="custom-filter-logic-selector"
+            class={{concatClass
+              "btn custom-filter-logic-selector"
+              (if this.orFilter "checked")
+            }}
+          >
+            {{i18n (themePrefix "custom_filters.or")}}
+            <Input
+              {{on "change" this.toggleTag}}
+              @checked={{this.orFilter}}
+              @type="checkbox"
+              id="custom-filter-logic-selector"
+              class="custom-filter-logic-selector filter-tag-input"
+            />
+          </label>
+
+          <ul class="custom-filters__tags">
+            {{#each this.tagGroups as |tagGroup|}}
+              {{#if tagGroup.name}}
+                <li class="custom-filters__group">
+                  <h2>{{tagGroup.name}}</h2>
+                  <div class="custom-filters__list">
+                    {{#each tagGroup.tags as |tag|}}
+                      <FilterTag
+                        @name={{tag}}
+                        @selectTag={{this.selectTag}}
+                        @deselectTag={{this.deselectTag}}
+                        @selectedTags={{this.selectedTags}}
+                      />
+                    {{/each}}
+                  </div>
+                </li>
+              {{/if}}
+            {{/each}}
+          </ul>
+
+          <DButton
+            {{on "click" this.applyFilters}}
+            @translatedLabel={{i18n (themePrefix "apply_filters")}}
+            class="custom-filters__button"
+          />
+        </div>
+      </div>
+    {{/if}}
+  </template>
 }
