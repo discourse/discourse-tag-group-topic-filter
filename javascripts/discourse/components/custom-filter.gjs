@@ -11,7 +11,6 @@ import { i18n } from "discourse-i18n";
 import FilterTag from "./filter-tag";
 
 export default class CustomFilter extends Component {
-  @service siteSettings;
   @service router;
 
   @tracked orFilter = false;
