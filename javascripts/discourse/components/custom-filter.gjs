@@ -25,11 +25,11 @@ export default class CustomFilter extends Component {
   _initializeSelectedTags() {
     const currentRoute = this.router.currentRoute;
     if (currentRoute.name === "tag.show") {
-      this.selectedTags = [currentRoute.attributes?.tag.id];
+      this.selectedTags = [currentRoute.attributes?.tag.name];
     }
     if (currentRoute.name === "tags.intersection") {
       this.selectedTags = [
-        currentRoute.attributes.tag.id,
+        currentRoute.attributes.tag.name,
         ...currentRoute.attributes.additionalTags,
       ];
     }
