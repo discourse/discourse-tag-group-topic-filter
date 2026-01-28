@@ -7,8 +7,6 @@ module("Integration | Component | filter-tag", function (hooks) {
   setupRenderingTest(hooks);
 
   test("renders and toggles tags", async function (assert) {
-    const self = this;
-
     this.set("tagName", "exampleTag");
     this.set("selectedTags", []);
     this.set("selectTag", (tag) => this.selectedTags.push(tag));
@@ -22,10 +20,10 @@ module("Integration | Component | filter-tag", function (hooks) {
     await render(
       <template>
         <FilterTag
-          @name={{self.tagName}}
-          @selectedTags={{self.selectedTags}}
-          @selectTag={{self.selectTag}}
-          @deselectTag={{self.deselectTag}}
+          @name={{this.tagName}}
+          @selectedTags={{this.selectedTags}}
+          @selectTag={{this.selectTag}}
+          @deselectTag={{this.deselectTag}}
         />
       </template>
     );
