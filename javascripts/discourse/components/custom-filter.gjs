@@ -12,23 +12,34 @@ import FilterTag from "./filter-tag";
 
 export default class CustomFilter extends Component {
   @service router;
+  @service site;
 
   @tracked orFilter = false;
-  selectedTags = [];
+  selectedTagNames = [];
   category = {};
+  tagCache = new Map();
 
   constructor() {
     super(...arguments);
     this._initializeSelectedTags();
+    this._loadTagsFromSite();
   }
 
   _initializeSelectedTags() {
     const currentRoute = this.router.currentRoute;
     if (currentRoute.name === "tag.show") {
-      this.selectedTags = [currentRoute.attributes?.tag.name];
+      const tag = currentRoute.attributes?.tag;
+      if (tag) {
+        this.selectedTagNames = [tag.name];
+        this.tagCache.set(tag.name, tag);
+      }
     }
     if (currentRoute.name === "tags.intersection") {
-      this.selectedTags = [
+      const tag = currentRoute.attributes?.tag;
+      if (tag) {
+        this.tagCache.set(tag.name, tag);
+      }
+      this.selectedTagNames = [
         currentRoute.attributes.tag.name,
         ...currentRoute.attributes.additionalTags,
       ];
@@ -43,6 +54,40 @@ export default class CustomFilter extends Component {
     )
       ? !this.router.currentRoute.queryParams.orFilter
       : false;
+  }
+
+  _loadTagsFromSite() {
+    const siteTags = this.site.navigation_menu_site_top_tags || [];
+    siteTags.forEach((tag) => {
+      if (tag.name && !this.tagCache.has(tag.name)) {
+        this.tagCache.set(tag.name, tag);
+      }
+    });
+  }
+
+  _getTagByName(tagName) {
+    return this.tagCache.get(tagName) || null;
+  }
+
+  _getTagUrl(tagName) {
+    const tag = this._getTagByName(tagName);
+    if (tag?.url) {
+      return tag.url;
+    }
+    if (tag?.id && tag?.slug) {
+      return `/tag/${tag.slug}/${tag.id}`;
+    }
+    // Fallback to legacy format if tag not found
+    return `/tag/${tagName}`;
+  }
+
+  _getCategoryTagUrl(categorySlug, tagName) {
+    const tag = this._getTagByName(tagName);
+    if (tag?.id && tag?.slug) {
+      return `/tags/c/${categorySlug}/${tag.slug}/${tag.id}`;
+    }
+    // Fallback to legacy format
+    return `/tags/c/${categorySlug}/${tagName}`;
   }
 
   get tagGroups() {
@@ -86,31 +131,34 @@ export default class CustomFilter extends Component {
   }
 
   @action
-  selectTag(tag) {
-    this.selectedTags.push(tag);
+  selectTag(tagName) {
+    this.selectedTagNames.push(tagName);
   }
 
   @action
-  deselectTag(tag) {
-    this.selectedTags = this.selectedTags.filter((t) => t !== tag);
+  deselectTag(tagName) {
+    this.selectedTagNames = this.selectedTagNames.filter((t) => t !== tagName);
   }
 
   @action
   applyFilters() {
-    const tagsPath = this.selectedTags.join("/");
-
     let transitionURL = "";
-    if (this.selectedTags.length > 1) {
+
+    if (this.selectedTagNames.length > 1) {
+      // Intersection routes still use tag names
+      const tagsPath = this.selectedTagNames.join("/");
       transitionURL = `/tags/intersection/${tagsPath}`;
-    } else if (this.selectedTags.length === 0) {
+    } else if (this.selectedTagNames.length === 0) {
       transitionURL = this.category.slug
         ? `/c/${this.category.slug}`
         : "/latest";
       DiscourseURL.routeTo(transitionURL);
+      return;
     } else {
+      const tagName = this.selectedTagNames[0];
       transitionURL = this.category.slug
-        ? `/tags/c/${this.category.slug}/${tagsPath}`
-        : `/tag/${tagsPath}`;
+        ? this._getCategoryTagUrl(this.category.slug, tagName)
+        : this._getTagUrl(tagName);
     }
 
     let params = [];
@@ -122,7 +170,9 @@ export default class CustomFilter extends Component {
       params.push(`match_all_tags=${!this.orFilter}`);
     }
 
-    transitionURL = `${transitionURL}?${params.join("&")}`;
+    if (params.length > 0) {
+      transitionURL = `${transitionURL}?${params.join("&")}`;
+    }
     DiscourseURL.routeTo(transitionURL);
   }
 
@@ -159,7 +209,7 @@ export default class CustomFilter extends Component {
                         @name={{tag}}
                         @selectTag={{this.selectTag}}
                         @deselectTag={{this.deselectTag}}
-                        @selectedTags={{this.selectedTags}}
+                        @selectedTags={{this.selectedTagNames}}
                       />
                     {{/each}}
                   </div>
