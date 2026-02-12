@@ -1,5 +1,3 @@
 import CustomFilter from "../../components/custom-filter";
 
-<template>
-  <CustomFilter />
-</template>
+<template><CustomFilter /></template>
