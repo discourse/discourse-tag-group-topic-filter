@@ -6,6 +6,7 @@ import { action } from "@ember/object";
 import { service } from "@ember/service";
 import DButton from "discourse/components/d-button";
 import concatClass from "discourse/helpers/concat-class";
+import { ajax } from "discourse/lib/ajax";
 import DiscourseURL from "discourse/lib/url";
 import { i18n } from "discourse-i18n";
 import FilterTag from "./filter-tag";
@@ -96,11 +97,10 @@ export default class CustomFilter extends Component {
   }
 
   @action
-  applyFilters() {
-    const tagsPath = this.selectedTags.join("/");
-
+  async applyFilters() {
     let transitionURL = "";
     if (this.selectedTags.length > 1) {
+      const tagsPath = this.selectedTags.join("/");
       transitionURL = `/tags/intersection/${tagsPath}`;
     } else if (this.selectedTags.length === 0) {
       transitionURL = this.category.slug
@@ -108,9 +108,12 @@ export default class CustomFilter extends Component {
         : "/latest";
       DiscourseURL.routeTo(transitionURL);
     } else {
+      const tagName = this.selectedTags[0];
+      const result = await ajax(`/tag/${tagName}/info.json`);
+      const tag = result.tag_info;
       transitionURL = this.category.slug
-        ? `/tags/c/${this.category.slug}/${tagsPath}`
-        : `/tag/${tagsPath}`;
+        ? `/tags/c/${this.category.slug}/${this.category.id}/${tag.slug}/${tag.id}`
+        : `/tag/${tag.slug}/${tag.id}`;
     }
 
     let params = [];

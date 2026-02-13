@@ -9,10 +9,22 @@ acceptance("Custom Filter | tag route", function (needs) {
   needs.settings({ tagging_enabled: true });
 
   needs.pretender((server, helper) => {
-    server.get("/tag/important/l/latest.json", () => {
+    server.get("/tag/1/l/latest.json", () => {
       return helper.response(
         cloneJSON(discoveryFixture["/tag/important/l/latest.json"])
       );
+    });
+    server.get("/tag/important/info.json", () => {
+      return helper.response({
+        tag_info: {
+          id: 1,
+          name: "important",
+          slug: "important",
+          description: "Important topics for discussion",
+          topic_count: 5,
+          pm_only: false,
+        },
+      });
     });
   });
 
